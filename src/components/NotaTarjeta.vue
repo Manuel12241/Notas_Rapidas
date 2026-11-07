@@ -7,10 +7,10 @@ const props = defineProps({
 
 defineEmits(['editar', 'eliminar'])
 
+// "fecha" viene como YYYY-MM-DD; se agrega la hora para que no se corra un día por zona horaria
 const fechaTexto = computed(() =>
-  new Date(props.nota.fecha).toLocaleString('es-GT', {
-    dateStyle: 'medium',
-    timeStyle: 'short'
+  new Date(`${props.nota.fecha}T00:00:00`).toLocaleDateString('es-GT', {
+    dateStyle: 'medium'
   })
 )
 </script>

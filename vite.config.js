@@ -3,6 +3,9 @@ import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  // Redirige /api al servidor Express (server/index.js) que habla con PostgreSQL
+  server: { proxy: { '/api': 'http://localhost:3000' } },
+  preview: { proxy: { '/api': 'http://localhost:3000' } },
   plugins: [
     vue(),
     VitePWA({
@@ -32,7 +35,9 @@ export default defineConfig({
       // Workbox guarda en caché todos los archivos de la app (funciona offline)
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
-        navigateFallback: '/index.html'
+        navigateFallback: '/index.html',
+        // Las llamadas a la API nunca se sirven desde la caché
+        navigateFallbackDenylist: [/^\/api/]
       },
 
       // Activa el service worker también con "npm run dev" para pruebas

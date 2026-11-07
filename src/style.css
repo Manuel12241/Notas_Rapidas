@@ -31,24 +31,7 @@ body { margin: 0; }
   border-bottom: 3px solid var(--acento);
 }
 .barra h1 { font-size: 1.15rem; margin: 0; letter-spacing: 0.01em; }
-.barra-derecha { display: flex; align-items: center; gap: 12px; }
-
-/* Indicador de conexión: punto + texto, sin "pastilla" */
-.estado {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  opacity: 0.9;
-}
-.estado::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.estado.online::before { background: #4cc38a; }
-.estado.offline::before { background: #f5b83d; }
+.barra .estado { font-size: 0.8rem; opacity: 0.85; white-space: nowrap; }
 
 /* ---------- Contenedor ---------- */
 .contenedor { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
@@ -96,6 +79,17 @@ input::placeholder, textarea::placeholder { color: var(--suave); }
 textarea { resize: vertical; line-height: 1.5; }
 input:focus, textarea:focus { outline: none; border-color: var(--primario); background: var(--tarjeta); }
 
+/* Campo de fecha: etiqueta + selector en una fila */
+.campo-fecha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--suave);
+}
+.campo-fecha input { width: auto; margin-bottom: 12px; }
+.campo-fecha span { margin-bottom: 12px; }
+
 .formulario .acciones { justify-content: flex-end; }
 
 /* ---------- Botones ---------- */
@@ -125,16 +119,6 @@ input:focus, textarea:focus { outline: none; border-color: var(--primario); back
 }
 .btn.primario:hover { box-shadow: 3px 3px 0 var(--acento); }
 
-/* Botón de la barra superior: contorno claro */
-.btn.instalar {
-  background: transparent;
-  color: var(--tarjeta);
-  border-color: var(--tarjeta);
-  box-shadow: none;
-  padding: 6px 12px;
-  font-size: 0.85rem;
-}
-.btn.instalar:hover { background: var(--acento); border-color: var(--acento); color: var(--tarjeta); transform: none; box-shadow: none; }
 
 /* Botones de texto (acciones dentro de cada nota) */
 .btn-texto {

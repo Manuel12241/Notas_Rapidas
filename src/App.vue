@@ -1,21 +1,21 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import NotaFormulario from './components/NotaFormulario.vue'
 import NotaTarjeta from './components/NotaTarjeta.vue'
 import { useNotas } from './composables/useNotas'
 
-const { notas, crearNota, editarNota, eliminarNota } = useNotas()
+const { notas, conectado, crearNota, editarNota, eliminarNota } = useNotas()
 
 const notaEditando = ref(null)
 const busqueda = ref('')
 
 // ---- Crear / editar / eliminar ----
-function guardar({ titulo, contenido }) {
+function guardar({ titulo, contenido, fecha }) {
   if (notaEditando.value) {
-    editarNota(notaEditando.value.id, titulo, contenido)
+    editarNota(notaEditando.value.id, titulo, contenido, fecha)
     notaEditando.value = null
   } else {
-    crearNota(titulo, contenido)
+    crearNota(titulo, contenido, fecha)
   }
 }
 
@@ -39,51 +39,14 @@ const notasFiltradas = computed(() => {
     (n) => n.titulo.toLowerCase().includes(q) || n.contenido.toLowerCase().includes(q)
   )
 })
-
-// ---- Estado de conexión ----
-const enLinea = ref(navigator.onLine)
-const actualizarConexion = () => (enLinea.value = navigator.onLine)
-
-// ---- Botón "Instalar app" ----
-const eventoInstalacion = ref(null)
-function guardarEventoInstalacion(e) {
-  e.preventDefault()
-  eventoInstalacion.value = e
-}
-async function instalar() {
-  if (!eventoInstalacion.value) return
-  eventoInstalacion.value.prompt()
-  await eventoInstalacion.value.userChoice
-  eventoInstalacion.value = null
-}
-const quitarBotonInstalar = () => (eventoInstalacion.value = null)
-
-onMounted(() => {
-  window.addEventListener('online', actualizarConexion)
-  window.addEventListener('offline', actualizarConexion)
-  window.addEventListener('beforeinstallprompt', guardarEventoInstalacion)
-  window.addEventListener('appinstalled', quitarBotonInstalar)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('online', actualizarConexion)
-  window.removeEventListener('offline', actualizarConexion)
-  window.removeEventListener('beforeinstallprompt', guardarEventoInstalacion)
-  window.removeEventListener('appinstalled', quitarBotonInstalar)
-})
 </script>
 
 <template>
   <header class="barra">
     <h1>📝 Notas Rápidas</h1>
-    <div class="barra-derecha">
-      <span class="estado" :class="enLinea ? 'online' : 'offline'">
-        {{ enLinea ? 'En línea' : 'Sin conexión' }}
-      </span>
-      <button v-if="eventoInstalacion" class="btn instalar" @click="instalar">
-        Instalar app
-      </button>
-    </div>
+    <small class="estado" :title="conectado ? 'Guardando en PostgreSQL' : 'Sin conexión: se guarda localmente'">
+      {{ conectado ? '● Conectado' : '○ Sin conexión' }}
+    </small>
   </header>
 
   <main class="contenedor">

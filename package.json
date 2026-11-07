@@ -4,15 +4,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n api,web -c blue,green \"npm:server\" \"vite\"",
+    "server": "node --env-file=.env --watch server/index.js",
     "build": "vite build",
-    "preview": "vite preview --host"
+    "preview": "concurrently -n api,web \"npm:server\" \"vite preview --host\""
   },
   "dependencies": {
+    "express": "^5.3.0",
+    "pg": "^8.23.1",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "concurrently": "^10.0.7",
     "vite": "^6.0.7",
     "vite-plugin-pwa": "^0.21.1"
   }
