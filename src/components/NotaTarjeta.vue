@@ -22,8 +22,8 @@ const fechaTexto = computed(() =>
     <footer>
       <small>{{ fechaTexto }}</small>
       <div class="acciones">
-        <button class="btn" @click="$emit('editar', nota)">Editar</button>
-        <button class="btn peligro" @click="$emit('eliminar', nota.id)">Eliminar</button>
+        <button class="btn-texto" @click="$emit('editar', nota)">Editar</button>
+        <button class="btn-texto peligro" @click="$emit('eliminar', nota.id)">Eliminar</button>
       </div>
     </footer>
   </article>
